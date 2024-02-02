@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elevadores</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      height: 100vh;
+      margin: 0;
+      background-color: #0585b8;
+    }
+
+    .building {
+      position: relative;
+      width: 500px;
+      height: 900px; 
+      background-color: #ffffff; 
+      border-radius: 10px 10px 0px 0px; 
+      box-shadow: 0 10px 20px rgba(253, 253, 253, 0.3); 
+    }
+
+    .floor {
+      width: 100%; 
+      height: 100px; 
+      position: absolute;
+      background-color: #ffffff; 
+      border-radius: 10px 10px 0px 0px;
+      margin-top: 10px; 
+    }
+
+    .elevador {
+      position: absolute;
+      bottom: 10%; 
+      width: 50px;
+      height: 80px;
+      z-index: 1; 
+    }
+
+    #elevador2 {
+      right: 10%; 
+    }
+
+    .elevador img {
+      width: 100px;
+      height: 100px;
+    }
+
+    .controls {
+      position: absolute;
+      left: 100px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .control-button {
+      height: 100px;
+      width: 250px;
+      margin-left: 20px;
+      
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="building">
+    <div class="floor"></div>
+    <div class="floor"></div>
+    <div class="floor"></div>
+    <div class="floor"></div>
+    <div class="floor"></div>
+    <div class="floor"></div>
+
+    <div class="elevador" id="elevador1"><img src="img/elevador.webp" alt="Elevador 1"></div>
+    <div class="elevador" id="elevador2" style="z-index: -2;"><img src="img/elevador.webp" alt="Elevador 2"></div>
+
+    <div class="controls">
+      <button class="control-button" onclick="moverElevador(6)">Andar 6</button>
+      <button class="control-button" onclick="moverElevador(5)">Andar 5</button>
+      <button class="control-button" onclick="moverElevador(4)">Andar 4</button>
+      <button class="control-button" onclick="moverElevador(3)">Andar 3</button>
+      <button class="control-button" onclick="moverElevador(2)">Andar 2</button>
+      <button class="control-button" onclick="moverElevador(1)">Andar 1</button>
+      <button class="control-button" onclick="moverElevador(0)">Térreo</button>
+      <button class="control-button" onclick="moverElevador(-1)">Subsolo 1</button>
+      <button class="control-button" onclick="moverElevador(-2)">Subsolo 2</button>
+    </div>
+  </div>
+
+  <script>
+    let posElevador1 = 0;
+    let posElevador2 = 0;
+
+    function moverElevador(andar) {
+      const andarHeight = document.querySelector('.floor').offsetHeight;
+      const espacoEntreAndares = 10;
+
+      const destino = andar * (andarHeight + espacoEntreAndares);
+
+      const distanciaElevador1 = Math.abs(destino - posElevador1);
+      const distanciaElevador2 = Math.abs(destino - posElevador2);
+
+      if (distanciaElevador1 <= distanciaElevador2 || posElevador1 === posElevador2) {
+        console.log(`Movendo elevador 1 para o andar ${andar}`);
+        document.getElementById('elevador1').style.bottom = `${destino}px`;
+        posElevador1 = destino;
+        document.getElementById('elevador1').style.zIndex = 1; /* Move o elevador 1 para a frente */
+        document.getElementById('elevador2').style.zIndex = 0; /* Move o elevador 2 para trás */
+      } else {
+        console.log(`Movendo elevador 2 para o andar ${andar}`);
+        document.getElementById('elevador2').style.bottom = `${destino}px`;
+        posElevador2 = destino;
+        document.getElementById('elevador2').style.zIndex = 1; /* Move o elevador 2 para a frente */
+        document.getElementById('elevador1').style.zIndex = 0; /* Move o elevador 1 para trás */
+      }
+    }
+  </script>
+</body>
+</html>
