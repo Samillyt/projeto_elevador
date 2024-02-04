@@ -16,7 +16,7 @@
 
     .building {
       position: relative;
-      width: 500px;
+      width: 700px;
       height: 900px; 
       background-color: #ffffff; 
       border-radius: 10px 10px 0px 0px; 
@@ -34,33 +34,37 @@
 
     .elevador {
       position: absolute;
-      bottom: 10%; 
+      bottom: 0; /* Ajuste para começar no térreo */
       width: 50px;
       height: 80px;
       z-index: 1; 
     }
 
+    #elevador1 {
+      margin-bottom: 220px;
+    }
+
     #elevador2 {
-      right: 10%; 
+      right: 10%;
+      margin-bottom: 220px;
     }
 
     .elevador img {
-      width: 100px;
-      height: 100px;
+      width: 120px;
+      height: 120px;
     }
 
     .controls {
       position: absolute;
-      left: 100px;
+      left: 150px;
       display: flex;
       flex-direction: column;
     }
 
     .control-button {
       height: 100px;
-      width: 250px;
-      margin-left: 20px;
-      
+      width: 300px;
+      margin-left: 45px;
       cursor: pointer;
     }
   </style>
@@ -75,7 +79,7 @@
     <div class="floor"></div>
 
     <div class="elevador" id="elevador1"><img src="img/elevador.webp" alt="Elevador 1"></div>
-    <div class="elevador" id="elevador2" style="z-index: -2;"><img src="img/elevador.webp" alt="Elevador 2"></div>
+    <div class="elevador" id="elevador2"><img src="img/elevador.webp" alt="Elevador 2"></div>
 
     <div class="controls">
       <button class="control-button" onclick="moverElevador(6)">Andar 6</button>
@@ -96,25 +100,30 @@
 
     function moverElevador(andar) {
       const andarHeight = document.querySelector('.floor').offsetHeight;
-      const espacoEntreAndares = 10;
+      const distanciaPorAndar = 97.5;  // Ajuste aqui para a altura do seu andar
 
-      const destino = andar * (andarHeight + espacoEntreAndares);
+      const destino = andar * distanciaPorAndar;
 
       const distanciaElevador1 = Math.abs(destino - posElevador1);
       const distanciaElevador2 = Math.abs(destino - posElevador2);
 
-      if (distanciaElevador1 <= distanciaElevador2 || posElevador1 === posElevador2) {
+      if (posElevador1 === destino && posElevador2 === destino) {
+        console.log("Os elevadores já estão no mesmo andar. Nada acontecerá.");
+        return;
+      }
+
+      if (distanciaElevador1 <= distanciaElevador2) {
         console.log(`Movendo elevador 1 para o andar ${andar}`);
         document.getElementById('elevador1').style.bottom = `${destino}px`;
         posElevador1 = destino;
-        document.getElementById('elevador1').style.zIndex = 1; /* Move o elevador 1 para a frente */
-        document.getElementById('elevador2').style.zIndex = 0; /* Move o elevador 2 para trás */
+        document.getElementById('elevador1').style.zIndex = 1;
+        document.getElementById('elevador2').style.zIndex = 0;
       } else {
         console.log(`Movendo elevador 2 para o andar ${andar}`);
         document.getElementById('elevador2').style.bottom = `${destino}px`;
         posElevador2 = destino;
-        document.getElementById('elevador2').style.zIndex = 1; /* Move o elevador 2 para a frente */
-        document.getElementById('elevador1').style.zIndex = 0; /* Move o elevador 1 para trás */
+        document.getElementById('elevador2').style.zIndex = 1;
+        document.getElementById('elevador1').style.zIndex = 0;
       }
     }
   </script>
